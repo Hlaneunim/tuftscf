@@ -1,5 +1,7 @@
+install.packages("magick")
 library(magick)
 library(shiny)
+install.packages("keras")
 library(keras)
 #library(reticulate)
 
@@ -23,12 +25,21 @@ library(shiny)
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
+      
       fluidRow(column(1,
-                      fileInput("ul1", "Open Image", accept = c(".png", ".jpg")), 
-                      actionButton("ul2","Open CF Image"),
-                      actionButton("ul3","Predict"))
+                      fileInput("ul1", "Open Editing Image", accept = c(".jpg")), 
+                      fileInput("ul2", "Open Base Image", accept = c(".jpg")),
+                      actionButton("ul3","Predict Editing"))
       )),
     mainPanel(
+      fluidRow(
+        column(
+          5,
+          textOutput("eim")
+        ),  column 
+        (4,
+          textOutput("bim")
+        )),
       fluidRow(
         column(
           5,
@@ -53,6 +64,8 @@ server <- function(input, output, session) {
   im2<<-image_read("1161_80.jpg")
   awh<<-image_read("aw.jpg")
   abk<<-image_read("abk.jpg")
+  output$eim<-renderText("Editing image")
+  output$bim<-renderText("Base image")
   lim <- function(source)
   {   output$photo1<-renderImage({
     list(
@@ -86,7 +99,7 @@ server <- function(input, output, session) {
     mp<-predict(model,img)
     predind<-which.max(mp)
     pred<-colnames[predind]
-    outtext2<-paste("Prediction:",pred)
+    outtext2<-paste("Prediction:",pred,max(mp)*100,"%")
     outtext2
   })
   observeEvent(input$ul1, {
@@ -138,6 +151,8 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$fw, {
+    if (is.null(input$pb1))
+      return()
     apb<-array(unlist(input$pb1))
     x1<-as.numeric(apb[1])
     x2<-as.numeric(apb[2])
@@ -157,6 +172,8 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$fb, {
+    if (is.null(input$pb1))
+      return()
     apb<-array(unlist(input$pb1))
     x1<-as.numeric(apb[1])
     x2<-as.numeric(apb[2])
