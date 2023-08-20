@@ -1,12 +1,13 @@
-install.packages("magick")
-library(magick)
-library(shiny)
-install.packages("keras")
-library(keras)
-#library(reticulate)
+require(magick)
+require(shiny)
+require(keras)
 
-#reticulate::virtualenv_create("myenv", python="/usr/bin/python3")
-#reticulate::use_virtualenv("myenv", required=TRUE)
+require(reticulate)
+
+reticulate::virtualenv_create(envname = 'r-tensorflow', python = 'python3')
+reticulate::virtualenv_install('r-tensorflow', c('h5py', ' keras'), ignore_installed = FALSE)#
+reticulate::use_virtualenv(virtualenv = 'r-tensorflow', required = TRUE)
+
     
 
 model<-load_model_hdf5("tufts3.hdf5")
