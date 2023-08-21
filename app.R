@@ -3,7 +3,10 @@ require(shiny)
 require(keras)
 require(tensorflow)
 require(reticulate)
+install_tensorflow()
+install_keras()
 py_install("h5py")
+
 #reticulate::virtualenv_create(envname = 'r-tensorflow', python = 'virtualenv_starter()')
 #reticulate::virtualenv_install('r-tensorflow', c('h5py', ' keras'), ignore_installed = FALSE)#
 #reticulate::use_virtualenv(virtualenv = 'r-tensorflow', required = TRUE)
